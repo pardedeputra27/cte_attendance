@@ -1,186 +1,125 @@
-import 'package:cte_attendance/controllers/employee.dart';
-import 'package:cte_attendance/controllers/server_api.dart';
 import 'package:flutter/material.dart';
-import 'package:select_form_field/select_form_field.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-void main(List<String> args) {
+void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  List<Employee> employees = <Employee>[];
+
+  late EmployeeDataSource employeeDataSource;
+
+  @override
+  void initState() {
+    employees = getEmployees();
+    employeeDataSource = EmployeeDataSource(employees: employees);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    const appTitle = 'Citra Tubindo Engineering';
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          // primarySwatch: Colors.cyan,
-          ),
       home: Scaffold(
         appBar: AppBar(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [Text(appTitle)],
-          ),
+          title: const Text('Syncfusion Flutter DataGrid'),
         ),
-        body: const MyForm(),
+        body: SfDataGrid(
+          source: employeeDataSource,
+          columns: <GridColumn>[
+            GridColumn(
+                columnName: 'id',
+                label: Container(
+                  alignment: Alignment.center,
+                  child: const Text(
+                    'ID',
+                  ),
+                ),
+                columnWidthMode: ColumnWidthMode.auto),
+            GridColumn(
+                columnName: 'name',
+                label: Container(
+                    alignment: Alignment.centerLeft,
+                    child: const Text('Name'))),
+            GridColumn(
+                columnName: 'designation',
+                width: 120,
+                label: Container(
+                    alignment: Alignment.centerLeft,
+                    child: const Text('Designation'))),
+            GridColumn(
+                columnName: 'salary',
+                label: Container(
+                    padding: const EdgeInsets.all(16.0),
+                    alignment: Alignment.centerRight,
+                    child: const Text('Salary'))),
+          ],
+        ),
       ),
     );
   }
 }
 
-class MyForm extends StatefulWidget {
-  const MyForm({Key? key}) : super(key: key);
+class EmployeeDataSource extends DataGridSource {
+  EmployeeDataSource({required List<Employee> employees}) {
+    _employees = employees
+        .map<DataGridRow>((e) => DataGridRow(cells: [
+              DataGridCell<int>(columnName: 'id', value: e.id),
+              DataGridCell<String>(columnName: 'name', value: e.name),
+              DataGridCell<String>(
+                  columnName: 'designation', value: e.designation),
+              DataGridCell<int>(columnName: 'salary', value: e.salary),
+            ]))
+        .toList();
+  }
+
+  List<DataGridRow> _employees = [];
 
   @override
-  State<MyForm> createState() => _MyFormState();
+  List<DataGridRow> get rows => _employees;
+
+  @override
+  DataGridRowAdapter? buildRow(DataGridRow row) {
+    return DataGridRowAdapter(
+        cells: row.getCells().map<Widget>((dataGridCell) {
+      return Container(
+        alignment: (dataGridCell.columnName == 'id' ||
+                dataGridCell.columnName == 'salary')
+            ? Alignment.centerRight
+            : Alignment.centerLeft,
+        padding: const EdgeInsets.all(16.0),
+        child: Text(dataGridCell.value.toString()),
+      );
+    }).toList());
+  }
 }
 
-class _MyFormState extends State<MyForm> {
-  final _formKey = GlobalKey<FormState>();
-  final List<Map<String, dynamic>> _selectPeriode = [
-    {
-      'value': 1,
-      'label': 'Januari',
-    },
-    {
-      'value': 2,
-      'label': 'February',
-    },
-    {
-      'value': 3,
-      'label': 'Maret',
-    },
-    {
-      'value': 4,
-      'label': 'Maret',
-    },
-    {
-      'value': 5,
-      'label': 'Maret',
-    },
-    {
-      'value': 6,
-      'label': 'Maret',
-    },
+List<Employee> getEmployees() {
+  return [
+    Employee(10001, 'James', 'Project Lead', 20000),
+    Employee(10002, 'Kathryn', 'Manager', 30000),
+    Employee(10003, 'Lara', 'Developer', 15000),
+    Employee(10004, 'Michael', 'Designer', 15000),
+    Employee(10005, 'Martin', 'Developer', 15000),
+    Employee(10006, 'Newberry', 'Developer', 15000),
+    Employee(10007, 'Balnc', 'Developer', 15000),
+    Employee(10008, 'Perry', 'Developer', 15000),
+    Employee(10009, 'Gable', 'Developer', 15000),
+    Employee(10010, 'Grimes', 'Developer', 15000)
   ];
-  TextEditingController nikController = TextEditingController();
-  TextEditingController periodeController = TextEditingController();
-
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is disposed.
-    nikController.dispose();
-    periodeController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Center(
-        child: Container(
-          margin: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                margin: const EdgeInsets.only(bottom: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Image.asset('assets/icons/cte.ico', width: 45, height: 45),
-                    const Text(
-                      'CTE Employee Attendance ',
-                      style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.cyan),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-              TextFormField(
-                controller: nikController,
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.person),
-                  hintText: 'Enter Your NIK....',
-                  labelText: 'NIK',
-                ),
-                autofocus: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'NIK cannot be empty';
-                  }
-                  return null;
-                },
-              ),
-              SelectFormField(
-                controller: periodeController,
-                type: SelectFormFieldType.dropdown, // or can be dialog
-                icon: const Icon(Icons.date_range),
-                labelText: 'Please select periode',
-                items: _selectPeriode,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please selected one';
-                  }
-                  return null;
-                },
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 20),
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    final key = _formKey.currentState;
-                    final nik = nikController.text;
-                    final periode = periodeController.text;
-                    if (key!.validate()) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Processing Data')),
-                      );
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetailAttendance(
-                            person: Person(nik, periode),
-                          ),
-                        ),
-                      );
-                    }
-                  },
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.lightGreen)),
-                  icon: const Icon(Icons.add_to_home_screen),
-                  label: const Text('SUBMIT'),
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 }
 
-class DetailAttendance extends StatelessWidget {
-  final Person person;
-  const DetailAttendance({Key? key, required this.person}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Your Attendance Detail'),
-      ),
-      body: Column(
-        children: [APIAttendance(nik: person.nik, periode: person.periode)],
-      ),
-    );
-  }
+class Employee {
+  Employee(this.id, this.name, this.designation, this.salary);
+  final int id;
+  final String name;
+  final String designation;
+  final int salary;
 }

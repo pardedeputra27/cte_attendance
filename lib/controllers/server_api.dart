@@ -5,17 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class Attendance {
-  final bool error;
-  final String message;
+  final String nik;
+  final String name;
   const Attendance({
-    required this.error,
-    required this.message,
+    required this.nik,
+    required this.name,
   });
 
   factory Attendance.fromJson(Map<String, dynamic> data) {
     return Attendance(
-      error: data['error'],
-      message: data['message'],
+      nik: data['nik'],
+      name: data['name'],
     );
   }
 }
@@ -43,12 +43,20 @@ class _APIAttendanceState extends State<APIAttendance> {
     return ListView(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      children: [
+      children: <Widget>[
         FutureBuilder<Attendance>(
           future: futureAttendance,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return Text(snapshot.data!.message);
+              return ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemBuilder: (BuildContext context, int index) {
+                  return ListTile(
+                    title: Text(snapshot.data!.nik),
+                  );
+                },
+              );
             } else if (snapshot.hasError) {
               return Text('${snapshot.error}');
             }
@@ -56,7 +64,6 @@ class _APIAttendanceState extends State<APIAttendance> {
             return const CircularProgressIndicator();
           },
         ),
-        Text(widget.nik),
       ],
     );
   }
@@ -69,8 +76,10 @@ Future<Attendance> fetchAttendance(nik, periode) async {
   );
 
   if (response.statusCode == 200) {
-    print(response.body);
-    return Attendance.fromJson(jsonDecode(response.body));
+    final finalResponse = jsonDecode(response.body)['data'];
+    //print(finalResponse);
+
+    return Attendance.fromJson(finalResponse[0]);
   } else {
     // If the server did not return a 200 OK response,
     throw Exception('Failed to load Employee Attendance');
