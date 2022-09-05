@@ -1,0 +1,175 @@
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+          body: FutureBuilder(
+        future: getAttendanceDataSource(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          return snapshot.hasData
+              ? SfDataGrid(source: snapshot.data, columns: getColumns())
+              : const Center(
+                  child: CircularProgressIndicator(
+                    strokeWidth: 3.0,
+                  ),
+                );
+        },
+      )),
+    );
+  }
+}
+
+Future<AttendanceDataGridSource> getAttendanceDataSource() async {
+  var attendanceList = await generateAttendanceList();
+  return AttendanceDataGridSource(attendanceList);
+}
+
+List<GridColumn> getColumns() {
+  return <GridColumn>[
+    GridColumn(
+      columnName: 'columnName1',
+      label: Container(
+        alignment: Alignment.center,
+        padding: const EdgeInsets.all(8),
+        child: const Text(
+          'Order ID',
+          overflow: TextOverflow.clip,
+          softWrap: true,
+        ),
+      ),
+    ),
+    GridColumn(
+      columnName: 'columnName2',
+      label: Container(
+        alignment: Alignment.center,
+        padding: const EdgeInsets.all(8),
+        child: const Text(
+          'Costumer ID',
+          overflow: TextOverflow.clip,
+          softWrap: true,
+        ),
+      ),
+    ),
+    GridColumn(
+      columnName: 'columnName3',
+      label: Container(
+        alignment: Alignment.center,
+        padding: const EdgeInsets.all(8),
+        child: const Text(
+          'Employee ID',
+          overflow: TextOverflow.clip,
+          softWrap: true,
+        ),
+      ),
+    )
+  ];
+}
+
+class AttendanceDataGridSource extends DataGridSource {
+  late List<DataGridRow> dataGridRows;
+  late List<Attendance> attendanceList;
+  AttendanceDataGridSource(this.attendanceList) {
+    buildDatagridRow();
+  }
+  @override
+  List<DataGridRow> get rows => dataGridRows;
+
+  void buildDatagridRow() {
+    dataGridRows = attendanceList.map<DataGridRow>((dataGridRow) {
+      return DataGridRow(cells: [
+        DataGridCell(columnName: 'orderid', value: dataGridRow.orderID),
+        DataGridCell(columnName: 'costumerid', value: dataGridRow.constumerID),
+        DataGridCell(columnName: 'employeeid', value: dataGridRow.employeeID),
+      ]);
+    }).toList(growable: false);
+  }
+
+  @override
+  DataGridRowAdapter? buildRow(DataGridRow row) {
+    return DataGridRowAdapter(cells: [
+      Container(
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.all(8.0),
+        child: Text(row.getCells()[0].value.toString(),
+            overflow: TextOverflow.ellipsis),
+      ),
+      Container(
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.all(8.0),
+        child: Text(row.getCells()[1].value.toString(),
+            overflow: TextOverflow.ellipsis),
+      ),
+      Container(
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.all(8.0),
+        child: Text(row.getCells()[2].value.toString(),
+            overflow: TextOverflow.ellipsis),
+      ),
+    ]);
+  }
+}
+
+Future<List<Attendance>> generateAttendanceList() async {
+  final response = await http.get(
+    Uri.parse(
+        'https://ej2services.syncfusion.com/production/web-services/api/orders'),
+  );
+  final decodedAttendance =
+      json.decode(response.body).cast<Map<String, dynamic>>();
+  List<Attendance> attendanceList = await decodedAttendance
+      .map<Attendance>((json) => Attendance.fromJson(json))
+      .toList();
+  return attendanceList;
+}
+
+class Attendance {
+  final orderID;
+  final constumerID;
+  final employeeID;
+  Attendance({
+    required this.orderID,
+    required this.constumerID,
+    required this.employeeID,
+  });
+  factory Attendance.fromJson(Map<String, dynamic> json) {
+    return Attendance(
+      orderID: json['OrderID'],
+      constumerID: json['CustomerID'],
+      employeeID: json['EmployeeID'],
+    );
+  }
+}

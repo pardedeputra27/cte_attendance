@@ -14,8 +14,8 @@ class Attendance {
 
   factory Attendance.fromJson(Map<String, dynamic> data) {
     return Attendance(
-      nik: data['nik'],
-      name: data['name'],
+      nik: data['error'],
+      name: data['message'],
     );
   }
 }
@@ -53,7 +53,7 @@ class _APIAttendanceState extends State<APIAttendance> {
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
-                    title: Text(snapshot.data!.nik),
+                    title: Text(snapshot.data!.name),
                   );
                 },
               );
@@ -76,10 +76,10 @@ Future<Attendance> fetchAttendance(nik, periode) async {
   );
 
   if (response.statusCode == 200) {
-    final finalResponse = jsonDecode(response.body)['data'];
+    final finalResponse = jsonDecode(response.body);
     //print(finalResponse);
 
-    return Attendance.fromJson(finalResponse[0]);
+    return Attendance.fromJson(finalResponse);
   } else {
     // If the server did not return a 200 OK response,
     throw Exception('Failed to load Employee Attendance');
