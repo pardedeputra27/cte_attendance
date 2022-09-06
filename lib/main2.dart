@@ -29,17 +29,32 @@ class _DetailAttendanceState extends State<DetailAttendance> {
           body: FutureBuilder(
             future: getAttendanceDataSource(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
-              return snapshot.hasData
-                  ? SfDataGrid(
-                      source: snapshot.data,
-                      columns: getColumns(),
-                      //frozenColumnsCount: 1,
-                    )
-                  : const Center(
-                      child: CircularProgressIndicator(
-                        strokeWidth: 3.0,
+              if (snapshot.hasData) {
+                return SfDataGrid(
+                    source: snapshot.data,
+                    columns: getColumnsAttendance(),
+                    footer: Container(
+                      alignment: Alignment.centerRight,
+                      color: Colors.white,
+                      child: const Text(
+                        'Citra Tubindo Engineering',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 4,
+                        ),
                       ),
-                    );
+                    ),
+                    columnWidthMode: ColumnWidthMode.fill,
+                    //frozenColumnsCount: 1,
+                    gridLinesVisibility: GridLinesVisibility.both,
+                    headerGridLinesVisibility: GridLinesVisibility.both);
+              } else if (snapshot.hasError) {
+                return Text('${snapshot.error}');
+              } else {
+                return const CircularProgressIndicator(
+                  strokeWidth: 4.0,
+                );
+              }
             },
           )),
     );
@@ -51,7 +66,7 @@ Future<AttendanceDataGridSource> getAttendanceDataSource() async {
   return AttendanceDataGridSource(attendanceList);
 }
 
-List<GridColumn> getColumns() {
+List<GridColumn> getColumnsAttendance() {
   return <GridColumn>[
     GridColumn(
       columnName: 'columnName1',
@@ -59,8 +74,8 @@ List<GridColumn> getColumns() {
         alignment: Alignment.center,
         child: const Text(
           'Date',
-          overflow: TextOverflow.clip,
           softWrap: true,
+          style: TextStyle(color: Colors.red),
         ),
       ),
     ),
@@ -70,8 +85,8 @@ List<GridColumn> getColumns() {
         alignment: Alignment.center,
         child: const Text(
           'Presence',
-          overflow: TextOverflow.clip,
           softWrap: true,
+          style: TextStyle(color: Colors.green),
         ),
       ),
     ),
@@ -81,8 +96,8 @@ List<GridColumn> getColumns() {
         alignment: Alignment.center,
         child: const Text(
           'Time In',
-          overflow: TextOverflow.clip,
           softWrap: true,
+          style: TextStyle(color: Colors.green),
         ),
       ),
     ),
@@ -92,8 +107,8 @@ List<GridColumn> getColumns() {
         alignment: Alignment.center,
         child: const Text(
           'Time Out',
-          overflow: TextOverflow.clip,
           softWrap: true,
+          style: TextStyle(color: Colors.green),
         ),
       ),
     ),
@@ -102,9 +117,9 @@ List<GridColumn> getColumns() {
       label: Container(
         alignment: Alignment.center,
         child: const Text(
-          'Absent',
-          overflow: TextOverflow.clip,
+          'Information',
           softWrap: true,
+          style: TextStyle(color: Colors.blueGrey),
         ),
       ),
     )
@@ -137,26 +152,33 @@ class AttendanceDataGridSource extends DataGridSource {
   DataGridRowAdapter? buildRow(DataGridRow row) {
     return DataGridRowAdapter(cells: [
       Container(
+        height: 5,
         alignment: Alignment.center,
-        child: Text(row.getCells()[0].value.toString(),
-            overflow: TextOverflow.ellipsis),
+        child: Text(
+          row.getCells()[0].value.toString(),
+          overflow: TextOverflow.ellipsis,
+        ),
       ),
       Container(
+        height: 5,
         alignment: Alignment.center,
         child: Text(row.getCells()[1].value.toString(),
             overflow: TextOverflow.ellipsis),
       ),
       Container(
+        height: 5,
         alignment: Alignment.center,
         child: Text(row.getCells()[2].value.toString(),
             overflow: TextOverflow.ellipsis),
       ),
       Container(
+        height: 5,
         alignment: Alignment.center,
         child: Text(row.getCells()[3].value.toString(),
             overflow: TextOverflow.ellipsis),
       ),
       Container(
+        height: 5,
         alignment: Alignment.center,
         child: Text(row.getCells()[4].value.toString(),
             overflow: TextOverflow.ellipsis),
@@ -168,7 +190,7 @@ class AttendanceDataGridSource extends DataGridSource {
 Future<List<Attendance>> generateAttendanceList() async {
   final response = await http.get(
     Uri.parse(
-        'http://192.168.40.14/ci-restserver-master/Get_attendance?nik=2203725&periode=4'),
+        'http://192.168.40.14/ci-restserver-master/Get_attendance?nik=2203725&periode=8'),
   );
   final decodedAttendance =
       json.decode(response.body)['data'].cast<Map<String, dynamic>>();
