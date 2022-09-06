@@ -135,8 +135,8 @@ class _MyFormState extends State<MyForm> {
                 child: ElevatedButton.icon(
                   onPressed: () {
                     final key = _formKey.currentState;
-                    final nik = nikController.text;
-                    final periode = periodeController.text;
+                    final nikValue = nikController.text;
+                    final periodeValue = periodeController.text;
                     if (key!.validate()) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Processing Data')),
@@ -145,7 +145,8 @@ class _MyFormState extends State<MyForm> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => DetailAttendance(
-                            person: Person(nik, periode),
+                            nik: nikValue,
+                            periode: periodeValue,
                           ),
                         ),
                       );
@@ -164,24 +165,4 @@ class _MyFormState extends State<MyForm> {
       ),
     );
   }
-}
-
-class DetailAttendance extends StatelessWidget {
-  final Person person;
-  const DetailAttendance({Key? key, required this.person}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('Your Attendance Detail'),
-        ),
-        body: SecondRoute(nik: person.nik, periode: person.periode));
-  }
-}
-
-class Person {
-  final String nik;
-  final String periode;
-  Person(this.nik, this.periode);
 }

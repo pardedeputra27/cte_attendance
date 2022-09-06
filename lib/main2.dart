@@ -3,33 +3,45 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-class SecondRoute extends StatefulWidget {
+class DetailAttendance extends StatefulWidget {
   final String nik;
   final String periode;
-  const SecondRoute({Key? key, required this.nik, required this.periode})
+  const DetailAttendance({Key? key, required this.nik, required this.periode})
       : super(key: key);
 
   @override
-  State<SecondRoute> createState() => _SecondRouteState();
+  State<DetailAttendance> createState() => _DetailAttendanceState();
 }
 
-class _SecondRouteState extends State<SecondRoute> {
+class _DetailAttendanceState extends State<DetailAttendance> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
+          appBar: AppBar(
+            title: Text('Your Detail ${widget.nik}'),
+            leading: BackButton(
+              color: Colors.black,
+              onPressed: (() => Navigator.pop(context)),
+            ),
+          ),
           body: FutureBuilder(
-        future: getAttendanceDataSource(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          return snapshot.hasData
-              ? SfDataGrid(source: snapshot.data, columns: getColumns())
-              : const Center(
-                  child: CircularProgressIndicator(
-                    strokeWidth: 3.0,
-                  ),
-                );
-        },
-      )),
+            future: getAttendanceDataSource(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              return snapshot.hasData
+                  ? SfDataGrid(
+                      source: snapshot.data,
+                      columns: getColumns(),
+                      //frozenColumnsCount: 1,
+                    )
+                  : const Center(
+                      child: CircularProgressIndicator(
+                        strokeWidth: 3.0,
+                      ),
+                    );
+            },
+          )),
     );
   }
 }
@@ -46,7 +58,7 @@ List<GridColumn> getColumns() {
       label: Container(
         alignment: Alignment.center,
         child: const Text(
-          'Order',
+          'Date',
           overflow: TextOverflow.clip,
           softWrap: true,
         ),
@@ -55,9 +67,9 @@ List<GridColumn> getColumns() {
     GridColumn(
       columnName: 'columnName2',
       label: Container(
-        alignment: Alignment.centerLeft,
+        alignment: Alignment.center,
         child: const Text(
-          'Costumer',
+          'Presence',
           overflow: TextOverflow.clip,
           softWrap: true,
         ),
@@ -66,9 +78,31 @@ List<GridColumn> getColumns() {
     GridColumn(
       columnName: 'columnName3',
       label: Container(
-        alignment: Alignment.centerLeft,
+        alignment: Alignment.center,
         child: const Text(
-          'Employee',
+          'Time In',
+          overflow: TextOverflow.clip,
+          softWrap: true,
+        ),
+      ),
+    ),
+    GridColumn(
+      columnName: 'columnName4',
+      label: Container(
+        alignment: Alignment.center,
+        child: const Text(
+          'Time Out',
+          overflow: TextOverflow.clip,
+          softWrap: true,
+        ),
+      ),
+    ),
+    GridColumn(
+      columnName: 'columnName4',
+      label: Container(
+        alignment: Alignment.center,
+        child: const Text(
+          'Absent',
           overflow: TextOverflow.clip,
           softWrap: true,
         ),
@@ -89,9 +123,12 @@ class AttendanceDataGridSource extends DataGridSource {
   void buildDatagridRow() {
     dataGridRows = attendanceList.map<DataGridRow>((dataGridRow) {
       return DataGridRow(cells: [
-        DataGridCell(columnName: 'orderid', value: dataGridRow.orderID),
-        DataGridCell(columnName: 'costumerid', value: dataGridRow.constumerID),
-        DataGridCell(columnName: 'employeeid', value: dataGridRow.employeeID),
+        //columnName itu tidak terlalu memperngaruhi Table
+        DataGridCell(columnName: 'rowName1', value: dataGridRow.date),
+        DataGridCell(columnName: 'rowName2', value: dataGridRow.dateIn),
+        DataGridCell(columnName: 'rowName3', value: dataGridRow.timeIn),
+        DataGridCell(columnName: 'rowName4', value: dataGridRow.timeOut),
+        DataGridCell(columnName: 'rowName5', value: dataGridRow.absent),
       ]);
     }).toList(growable: false);
   }
@@ -105,13 +142,23 @@ class AttendanceDataGridSource extends DataGridSource {
             overflow: TextOverflow.ellipsis),
       ),
       Container(
-        alignment: Alignment.centerLeft,
+        alignment: Alignment.center,
         child: Text(row.getCells()[1].value.toString(),
             overflow: TextOverflow.ellipsis),
       ),
       Container(
-        alignment: Alignment.centerLeft,
+        alignment: Alignment.center,
         child: Text(row.getCells()[2].value.toString(),
+            overflow: TextOverflow.ellipsis),
+      ),
+      Container(
+        alignment: Alignment.center,
+        child: Text(row.getCells()[3].value.toString(),
+            overflow: TextOverflow.ellipsis),
+      ),
+      Container(
+        alignment: Alignment.center,
+        child: Text(row.getCells()[4].value.toString(),
             overflow: TextOverflow.ellipsis),
       ),
     ]);
@@ -121,10 +168,10 @@ class AttendanceDataGridSource extends DataGridSource {
 Future<List<Attendance>> generateAttendanceList() async {
   final response = await http.get(
     Uri.parse(
-        'https://ej2services.syncfusion.com/production/web-services/api/orders'),
+        'http://192.168.40.14/ci-restserver-master/Get_attendance?nik=2203725&periode=4'),
   );
   final decodedAttendance =
-      json.decode(response.body).cast<Map<String, dynamic>>();
+      json.decode(response.body)['data'].cast<Map<String, dynamic>>();
   List<Attendance> attendanceList = await decodedAttendance
       .map<Attendance>((json) => Attendance.fromJson(json))
       .toList();
@@ -132,19 +179,25 @@ Future<List<Attendance>> generateAttendanceList() async {
 }
 
 class Attendance {
-  final String orderID;
-  final String constumerID;
-  final String employeeID;
+  final String date;
+  final String dateIn;
+  final String timeIn;
+  final String timeOut;
+  final String absent;
   Attendance({
-    required this.orderID,
-    required this.constumerID,
-    required this.employeeID,
+    required this.date,
+    required this.dateIn,
+    required this.timeIn,
+    required this.timeOut,
+    required this.absent,
   });
   factory Attendance.fromJson(Map<String, dynamic> json) {
     return Attendance(
-      orderID: json['ShipName'],
-      constumerID: json['CustomerID'],
-      employeeID: json['ShipCity'],
+      date: json['date'],
+      dateIn: json['date_in'],
+      timeIn: json['time_in'],
+      timeOut: json['time_out'],
+      absent: json['absent'],
     );
   }
 }
