@@ -14,6 +14,12 @@ class DetailAttendance extends StatefulWidget {
 }
 
 class _DetailAttendanceState extends State<DetailAttendance> {
+  Future<AttendanceDataGridSource> getAttendanceDataSource() async {
+    var attendanceList =
+        await generateAttendanceList(widget.nik, widget.periode);
+    return AttendanceDataGridSource(attendanceList);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -60,11 +66,6 @@ class _DetailAttendanceState extends State<DetailAttendance> {
           )),
     );
   }
-}
-
-Future<AttendanceDataGridSource> getAttendanceDataSource() async {
-  var attendanceList = await generateAttendanceList();
-  return AttendanceDataGridSource(attendanceList);
 }
 
 List<GridColumn> getColumnsAttendance() {
@@ -188,10 +189,10 @@ class AttendanceDataGridSource extends DataGridSource {
   }
 }
 
-Future<List<Attendance>> generateAttendanceList() async {
+Future<List<Attendance>> generateAttendanceList(nik, peride) async {
   final response = await http.get(
     Uri.parse(
-        'http://192.168.40.14/ci-restserver-master/Get_attendance?nik=2203725&periode=8'),
+        'http://192.168.40.14/ci-restserver-master/Get_attendance?nik=$nik&periode=$peride'),
   );
   final decodedAttendance =
       json.decode(response.body)['data'].cast<Map<String, dynamic>>();

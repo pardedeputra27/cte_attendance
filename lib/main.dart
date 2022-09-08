@@ -18,9 +18,20 @@ class MyApp extends StatelessWidget {
           ),
       home: Scaffold(
         appBar: AppBar(
+          shadowColor: Colors.red,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [Text('Citra Tubindo Engineering')],
+            children: [
+              Spacer(flex: 1),
+              Image.asset(
+                'assets/icons/cte.ico',
+                width: 45,
+                height: 45,
+              ),
+              Spacer(flex: 1),
+              Text('Citra Tubindo Engineering'),
+              Spacer(flex: 2),
+            ],
           ),
         ),
         body: const MyForm(),
@@ -89,9 +100,12 @@ class _MyFormState extends State<MyForm> {
                 margin: const EdgeInsets.only(bottom: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Image.asset('assets/icons/cte.ico', width: 45, height: 45),
-                    const Text(
+                  children: const <Widget>[
+                    Icon(
+                      Icons.account_circle_rounded,
+                      color: Colors.cyan,
+                    ),
+                    Text(
                       'CTE Employee Attendance ',
                       style: TextStyle(
                           fontSize: 17,
