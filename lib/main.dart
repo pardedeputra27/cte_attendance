@@ -18,7 +18,6 @@ class MyApp extends StatelessWidget {
           ),
       home: Scaffold(
         appBar: AppBar(
-          shadowColor: Colors.red,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
