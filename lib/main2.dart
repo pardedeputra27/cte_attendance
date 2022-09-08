@@ -31,29 +31,30 @@ class _DetailAttendanceState extends State<DetailAttendance> {
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
                 return SfDataGrid(
-                    source: snapshot.data,
-                    columns: getColumnsAttendance(),
-                    footer: Container(
-                      alignment: Alignment.centerRight,
-                      color: Colors.white,
-                      child: const Text(
-                        'Citra Tubindo Engineering',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 4,
-                        ),
+                  source: snapshot.data,
+                  columns: getColumnsAttendance(),
+                  footer: Container(
+                    alignment: Alignment.centerRight,
+                    color: Colors.white,
+                    child: const Text(
+                      'Citra Tubindo Engineering',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 4,
                       ),
                     ),
-                    columnWidthMode: ColumnWidthMode.fill,
-                    //frozenColumnsCount: 1,
-                    gridLinesVisibility: GridLinesVisibility.both,
-                    headerGridLinesVisibility: GridLinesVisibility.both);
+                  ),
+                  columnWidthMode: ColumnWidthMode.fill,
+                  //frozenColumnsCount: 1,
+                  gridLinesVisibility: GridLinesVisibility.both,
+                  headerGridLinesVisibility: GridLinesVisibility.both,
+                );
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');
               } else {
-                return const CircularProgressIndicator(
-                  strokeWidth: 4.0,
-                );
+                return const Center(
+                    child: Text('Please wait......',
+                        style: TextStyle(fontSize: 25)));
               }
             },
           )),
