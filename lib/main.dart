@@ -22,15 +22,15 @@ class MyApp extends StatelessWidget {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Spacer(flex: 1),
+              const Spacer(flex: 1),
               Image.asset(
                 'assets/icons/cte.ico',
                 width: 45,
                 height: 45,
               ),
-              Spacer(flex: 1),
-              Text('Citra Tubindo Engineering'),
-              Spacer(flex: 2),
+              const Spacer(flex: 1),
+              const Text('Citra Tubindo Engineering'),
+              const Spacer(flex: 2),
             ],
           ),
         ),
