@@ -154,7 +154,7 @@ class AttendanceDataGridSource extends DataGridSource {
   DataGridRowAdapter? buildRow(DataGridRow row) {
     return DataGridRowAdapter(cells: [
       Container(
-        height: 5,
+        height: 3,
         alignment: Alignment.center,
         child: Text(
           row.getCells()[0].value.toString(),
@@ -162,25 +162,25 @@ class AttendanceDataGridSource extends DataGridSource {
         ),
       ),
       Container(
-        height: 5,
+        height: 3,
         alignment: Alignment.center,
         child: Text(row.getCells()[1].value.toString(),
             overflow: TextOverflow.ellipsis),
       ),
       Container(
-        height: 5,
+        height: 3,
         alignment: Alignment.center,
         child: Text(row.getCells()[2].value.toString(),
             overflow: TextOverflow.ellipsis),
       ),
       Container(
-        height: 5,
+        height: 3,
         alignment: Alignment.center,
         child: Text(row.getCells()[3].value.toString(),
             overflow: TextOverflow.ellipsis),
       ),
       Container(
-        height: 5,
+        height: 3,
         alignment: Alignment.center,
         child: Text(row.getCells()[4].value.toString(),
             overflow: TextOverflow.ellipsis),
@@ -192,7 +192,7 @@ class AttendanceDataGridSource extends DataGridSource {
 Future<List<Attendance>> generateAttendanceList(nik, peride) async {
   final response = await http.get(
     Uri.parse(
-        'http://192.168.40.14/ci-restserver-master/Get_attendance?nik=$nik&periode=$peride'),
+        'http://192.168.40.14/ci-restserver-flutter/Get_attendance?nik=$nik&periode=$peride'),
   );
   final decodedAttendance =
       json.decode(response.body)['data'].cast<Map<String, dynamic>>();
