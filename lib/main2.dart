@@ -39,16 +39,29 @@ class _DetailAttendanceState extends State<DetailAttendance> {
                 return SfDataGrid(
                   source: snapshot.data,
                   columns: getColumnsAttendance(),
-                  footer: Container(
-                    alignment: Alignment.centerRight,
-                    color: Colors.white,
-                    child: const Text(
-                      'Citra Tubindo Engineering',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 4,
+                  footerFrozenRowsCount: 1,
+                  footer: Column(
+                    children: [
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: const [
+                            Text('Data'),
+                            Text('Data'),
+                            Text('Data'),
+                            Text('Data'),
+                          ]),
+                      Container(
+                        margin: const EdgeInsets.only(top: 9.0),
+                        alignment: Alignment.centerLeft,
+                        child: const Text(
+                          'Citra Tubindo Engineering',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 4,
+                              color: Colors.black45),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                   columnWidthMode: ColumnWidthMode.fill,
                   //frozenColumnsCount: 1,
