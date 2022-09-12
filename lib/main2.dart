@@ -1,7 +1,6 @@
+import 'controllers/attendance.dart';
 import 'package:cte_attendance/total.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class DetailAttendance extends StatefulWidget {
@@ -165,7 +164,51 @@ List<GridColumn> getColumnsAttendance() {
       ),
     ),
     GridColumn(
-      columnName: 'columnName4',
+      columnName: 'columnName5',
+      label: Container(
+        alignment: Alignment.center,
+        child: const Text(
+          'meal',
+          softWrap: true,
+          style: TextStyle(color: Colors.blueGrey),
+        ),
+      ),
+    ),
+    GridColumn(
+      columnName: 'columnName6',
+      label: Container(
+        alignment: Alignment.center,
+        child: const Text(
+          'transport',
+          softWrap: true,
+          style: TextStyle(color: Colors.blueGrey),
+        ),
+      ),
+    ),
+    GridColumn(
+      columnName: 'columnName7',
+      label: Container(
+        alignment: Alignment.center,
+        child: const Text(
+          'hours',
+          softWrap: true,
+          style: TextStyle(color: Colors.blueGrey),
+        ),
+      ),
+    ),
+    GridColumn(
+      columnName: 'columnName8',
+      label: Container(
+        alignment: Alignment.center,
+        child: const Text(
+          'break',
+          softWrap: true,
+          style: TextStyle(color: Colors.blueGrey),
+        ),
+      ),
+    ),
+    GridColumn(
+      columnName: 'columnName8',
       label: Container(
         alignment: Alignment.center,
         child: const Text(
@@ -195,7 +238,11 @@ class AttendanceDataGridSource extends DataGridSource {
         DataGridCell(columnName: 'rowName2', value: dataGridRow.dateIn),
         DataGridCell(columnName: 'rowName3', value: dataGridRow.timeIn),
         DataGridCell(columnName: 'rowName4', value: dataGridRow.timeOut),
-        DataGridCell(columnName: 'rowName5', value: dataGridRow.absent),
+        DataGridCell(columnName: 'rowName5', value: dataGridRow.meal),
+        DataGridCell(columnName: 'rowName6', value: dataGridRow.transport),
+        DataGridCell(columnName: 'rowName7', value: dataGridRow.hours),
+        DataGridCell(columnName: 'rowName8', value: dataGridRow.istirahat),
+        DataGridCell(columnName: 'rowName9', value: dataGridRow.absent),
       ]);
     }).toList(growable: false);
   }
@@ -235,43 +282,30 @@ class AttendanceDataGridSource extends DataGridSource {
         child: Text(row.getCells()[4].value.toString(),
             overflow: TextOverflow.ellipsis),
       ),
+      Container(
+        height: 3,
+        alignment: Alignment.center,
+        child: Text(row.getCells()[5].value.toString(),
+            overflow: TextOverflow.ellipsis),
+      ),
+      Container(
+        height: 3,
+        alignment: Alignment.center,
+        child: Text(row.getCells()[6].value.toString(),
+            overflow: TextOverflow.ellipsis),
+      ),
+      Container(
+        height: 3,
+        alignment: Alignment.center,
+        child: Text(row.getCells()[7].value.toString(),
+            overflow: TextOverflow.ellipsis),
+      ),
+      Container(
+        height: 3,
+        alignment: Alignment.center,
+        child: Text(row.getCells()[8].value.toString(),
+            overflow: TextOverflow.ellipsis),
+      ),
     ]);
-  }
-}
-
-Future<List<Attendance>> generateAttendanceList(nik, periode) async {
-  final response = await http.get(
-    Uri.parse(
-        'http://192.168.40.14/ci-restserver-flutter/Get_attendance?nik=$nik&periode=$periode'),
-  );
-  final decodedAttendance =
-      json.decode(response.body)['data'].cast<Map<String, dynamic>>();
-  List<Attendance> attendanceList = await decodedAttendance
-      .map<Attendance>((json) => Attendance.fromJson(json))
-      .toList();
-  return attendanceList;
-}
-
-class Attendance {
-  final String date;
-  final String dateIn;
-  final String timeIn;
-  final String timeOut;
-  final String absent;
-  Attendance({
-    required this.date,
-    required this.dateIn,
-    required this.timeIn,
-    required this.timeOut,
-    required this.absent,
-  });
-  factory Attendance.fromJson(Map<String, dynamic> json) {
-    return Attendance(
-      date: json['date'],
-      dateIn: json['date_in'],
-      timeIn: json['time_in'],
-      timeOut: json['time_out'],
-      absent: json['absent'],
-    );
   }
 }
