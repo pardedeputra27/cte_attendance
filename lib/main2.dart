@@ -1,3 +1,4 @@
+import 'package:cte_attendance/total.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -14,6 +15,14 @@ class DetailAttendance extends StatefulWidget {
 }
 
 class _DetailAttendanceState extends State<DetailAttendance> {
+  late Future<Total> futureTotal;
+
+  @override
+  void initState() {
+    super.initState();
+    futureTotal = fetchTotal(widget.nik, widget.periode);
+  }
+
   Future<AttendanceDataGridSource> getAttendanceDataSource() async {
     var attendanceList =
         await generateAttendanceList(widget.nik, widget.periode);
@@ -25,58 +34,86 @@ class _DetailAttendanceState extends State<DetailAttendance> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-          appBar: AppBar(
-            title: Text('Your Detail ${widget.nik}'),
-            leading: BackButton(
-              color: Colors.black,
-              onPressed: (() => Navigator.pop(context)),
-            ),
+        appBar: AppBar(
+          title: Row(
+            children: [
+              Text('Your Detail ${widget.nik}'),
+            ],
           ),
-          body: FutureBuilder(
-            future: getAttendanceDataSource(),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.hasData) {
-                return SfDataGrid(
-                  source: snapshot.data,
-                  columns: getColumnsAttendance(),
-                  footerFrozenRowsCount: 1,
-                  footer: Column(
+          leading: BackButton(
+            color: Colors.black,
+            onPressed: (() => Navigator.pop(context)),
+          ),
+        ),
+        body: FutureBuilder(
+          future: getAttendanceDataSource(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData) {
+              return SfDataGrid(
+                source: snapshot.data,
+                columns: getColumnsAttendance(),
+                footerFrozenRowsCount: 1,
+                footer: Container(
+                  margin: const EdgeInsets.only(top: 9.0),
+                  alignment: Alignment.centerLeft,
+                  child: Column(
                     children: [
+                      FutureBuilder<Total>(
+                        future: futureTotal,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                const Text('Total Meal : '),
+                                Text(snapshot.data!.totalMeal.toString()),
+                                const Text('Total transport : '),
+                                Text(snapshot.data!.totalTransport.toString()),
+                                const Text('totalhours : '),
+                                Text(snapshot.data!.totalHours),
+                                const Text('Total Break : '),
+                                Text(snapshot.data!.totalBreak),
+                              ],
+                            );
+                          } else if (snapshot.hasError) {
+                            return Text('${snapshot.error}');
+                          }
+                          //return const CircularProgressIndicator();
+                          return const Center(
+                              child: Text('Please wait count total'));
+                        },
+                      ),
                       Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: const [
-                            Text('Data'),
-                            Text('Data'),
-                            Text('Data'),
-                            Text('Data'),
-                          ]),
-                      Container(
-                        margin: const EdgeInsets.only(top: 9.0),
-                        alignment: Alignment.centerLeft,
-                        child: const Text(
-                          'Citra Tubindo Engineering',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 4,
-                              color: Colors.black45),
-                        ),
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: const <Widget>[
+                          Text(
+                            'Citra Tubindo Engineering',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 4,
+                                color: Colors.black45),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                  columnWidthMode: ColumnWidthMode.fill,
-                  //frozenColumnsCount: 1,
-                  gridLinesVisibility: GridLinesVisibility.both,
-                  headerGridLinesVisibility: GridLinesVisibility.both,
-                );
-              } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
-              } else {
-                return const Center(
-                    child: Text('Please wait......',
-                        style: TextStyle(fontSize: 25)));
-              }
-            },
-          )),
+                ),
+
+                columnWidthMode: ColumnWidthMode.fill,
+                //frozenColumnsCount: 1,
+                gridLinesVisibility: GridLinesVisibility.both,
+                headerGridLinesVisibility: GridLinesVisibility.both,
+              );
+            } else if (snapshot.hasError) {
+              return Text('${snapshot.error}');
+            } else {
+              return const Center(
+                  child: Text('Please wait......',
+                      style: TextStyle(fontSize: 25)));
+            }
+          },
+        ),
+      ),
     );
   }
 }
@@ -202,10 +239,10 @@ class AttendanceDataGridSource extends DataGridSource {
   }
 }
 
-Future<List<Attendance>> generateAttendanceList(nik, peride) async {
+Future<List<Attendance>> generateAttendanceList(nik, periode) async {
   final response = await http.get(
     Uri.parse(
-        'http://192.168.40.14/ci-restserver-flutter/Get_attendance?nik=$nik&periode=$peride'),
+        'http://192.168.40.14/ci-restserver-flutter/Get_attendance?nik=$nik&periode=$periode'),
   );
   final decodedAttendance =
       json.decode(response.body)['data'].cast<Map<String, dynamic>>();

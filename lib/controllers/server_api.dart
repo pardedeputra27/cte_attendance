@@ -72,7 +72,7 @@ class _APIAttendanceState extends State<APIAttendance> {
 Future<Attendance> fetchAttendance(nik, periode) async {
   final response = await http.get(
     Uri.parse(
-        'http://127.0.0.1/ci-restserver-master/Get_attendance?nik=$nik&periode=$periode'),
+        'http://127.0.0.1/ci-restserver-flutter/Get_attendance?nik=$nik&periode=$periode'),
   );
 
   if (response.statusCode == 200) {
