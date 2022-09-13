@@ -4,7 +4,6 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 List<GridColumn> getColumnsAttendance() {
   return <GridColumn>[
     GridColumn(
-      columnWidthMode: ColumnWidthMode.auto,
       columnName: 'columnName1',
       label: Container(
         alignment: Alignment.center,
@@ -50,6 +49,7 @@ List<GridColumn> getColumnsAttendance() {
     ),
     GridColumn(
       columnName: 'columnName5',
+      columnWidthMode: ColumnWidthMode.fitByCellValue,
       label: Container(
         alignment: Alignment.center,
         child: const Text(
@@ -61,10 +61,11 @@ List<GridColumn> getColumnsAttendance() {
     ),
     GridColumn(
       columnName: 'columnName6',
+      columnWidthMode: ColumnWidthMode.fitByCellValue,
       label: Container(
         alignment: Alignment.center,
         child: const Text(
-          'Trans',
+          'Tran',
           softWrap: true,
           style: TextStyle(color: Colors.green),
         ),

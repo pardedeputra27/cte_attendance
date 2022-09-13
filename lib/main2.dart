@@ -48,72 +48,84 @@ class _DetailAttendanceState extends State<DetailAttendance> {
             onPressed: (() => Navigator.pop(context)),
           ),
         ),
-        body: FutureBuilder(
-          future: getAttendanceDataSource(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.hasData) {
-              return SfDataGrid(
-                source: snapshot.data,
-                columns: getColumnsAttendance(),
-                columnWidthMode: ColumnWidthMode.none,
-                rowHeight: 25,
-                frozenColumnsCount: 1,
-                footerFrozenRowsCount: 1,
-                // allowSorting: true,
-                gridLinesVisibility: GridLinesVisibility.both,
-                headerGridLinesVisibility: GridLinesVisibility.both,
-                footer: Container(
-                  alignment: Alignment.centerLeft,
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(top: 3),
+        body: ListView(
+          children: [
+            const SizedBox(
+              height: 50,
+              child: Text('data'),
+            ),
+            const Divider(
+              color: Colors.black38,
+              thickness: 3,
+            ),
+            SizedBox(
+              height: 647,
+              child: FutureBuilder(
+                future: getAttendanceDataSource(),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.hasData) {
+                    return SfDataGrid(
+                      source: snapshot.data,
+                      columns: getColumnsAttendance(),
+                      columnWidthMode: ColumnWidthMode.none,
+                      rowHeight: 25,
+                      frozenColumnsCount: 1,
+                      footerFrozenRowsCount: 1,
+                      footer: Container(
                         alignment: Alignment.centerLeft,
-                        child: FutureBuilder<Total>(
-                          future: futureTotal,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  const Text('Total :'),
-                                  const Spacer(flex: 1),
-                                  Text(
-                                      'Meal : ${snapshot.data!.totalMeal.toString()} Transport : ${snapshot.data!.totalTransport.toString()} hours : ${snapshot.data!.totalHours} break : ${snapshot.data!.totalBreak}'),
-                                ],
-                              );
-                            } else if (snapshot.hasError) {
-                              return Text('${snapshot.error}');
-                            }
-                            //return const CircularProgressIndicator();
-                            return const Center(
-                                child: Text('Please wait count total'));
-                          },
+                        child: Column(
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(top: 3),
+                              alignment: Alignment.centerLeft,
+                              child: FutureBuilder<Total>(
+                                future: futureTotal,
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    return Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const Text('Total :'),
+                                        Text(
+                                            'Meal : ${snapshot.data!.totalMeal.toString()} Transport : ${snapshot.data!.totalTransport.toString()} hours : ${snapshot.data!.totalHours} break : ${snapshot.data!.totalBreak}'),
+                                      ],
+                                    );
+                                  } else if (snapshot.hasError) {
+                                    return Text('${snapshot.error}');
+                                  }
+                                  //return const CircularProgressIndicator();
+                                  return const Center(
+                                      child: Text('Please wait count total'));
+                                },
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(top: 10),
+                              alignment: Alignment.bottomRight,
+                              child: const Text(
+                                'Citra Tubindo Engineering',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 4,
+                                    color: Colors.blueGrey),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      Container(
-                        margin: const EdgeInsets.only(top: 10),
-                        alignment: Alignment.bottomRight,
-                        child: const Text(
-                          'Citra Tubindo Engineering',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 4,
-                              color: Colors.blueGrey),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            } else if (snapshot.hasError) {
-              return Text('${snapshot.error}');
-            } else {
-              return const Center(
-                  child: Text('Please wait......',
-                      style: TextStyle(fontSize: 25)));
-            }
-          },
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('${snapshot.error}');
+                  } else {
+                    return const Center(
+                        child: Text('Please wait......',
+                            style: TextStyle(fontSize: 25)));
+                  }
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
