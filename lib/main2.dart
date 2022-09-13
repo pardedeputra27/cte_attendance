@@ -1,5 +1,5 @@
 import 'controllers/attendance.dart';
-import 'package:cte_attendance/total.dart';
+import 'controllers/total.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -51,57 +51,54 @@ class _DetailAttendanceState extends State<DetailAttendance> {
               return SfDataGrid(
                 source: snapshot.data,
                 columns: getColumnsAttendance(),
+                columnWidthMode: ColumnWidthMode.none,
+                //frozenColumnsCount: 1,
+                gridLinesVisibility: GridLinesVisibility.both,
+                headerGridLinesVisibility: GridLinesVisibility.both,
                 footerFrozenRowsCount: 1,
                 footer: Container(
-                  margin: const EdgeInsets.only(top: 9.0),
                   alignment: Alignment.centerLeft,
                   child: Column(
                     children: [
-                      FutureBuilder<Total>(
-                        future: futureTotal,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                const Text('Total Meal : '),
-                                Text(snapshot.data!.totalMeal.toString()),
-                                const Text('Total transport : '),
-                                Text(snapshot.data!.totalTransport.toString()),
-                                const Text('totalhours : '),
-                                Text(snapshot.data!.totalHours),
-                                const Text('Total Break : '),
-                                Text(snapshot.data!.totalBreak),
-                              ],
-                            );
-                          } else if (snapshot.hasError) {
-                            return Text('${snapshot.error}');
-                          }
-                          //return const CircularProgressIndicator();
-                          return const Center(
-                              child: Text('Please wait count total'));
-                        },
+                      Container(
+                        margin: const EdgeInsets.only(top: 3),
+                        alignment: Alignment.centerLeft,
+                        child: FutureBuilder<Total>(
+                          future: futureTotal,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  const Text('Total :'),
+                                  const Spacer(flex: 1),
+                                  Text(
+                                      'Meal : ${snapshot.data!.totalMeal.toString()} Transport : ${snapshot.data!.totalTransport.toString()} hours : ${snapshot.data!.totalHours} break : ${snapshot.data!.totalBreak}'),
+                                ],
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text('${snapshot.error}');
+                            }
+                            //return const CircularProgressIndicator();
+                            return const Center(
+                                child: Text('Please wait count total'));
+                          },
+                        ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: const <Widget>[
-                          Text(
-                            'Citra Tubindo Engineering',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 4,
-                                color: Colors.black45),
-                          ),
-                        ],
+                      Container(
+                        margin: const EdgeInsets.only(top: 10),
+                        alignment: Alignment.bottomRight,
+                        child: const Text(
+                          'Citra Tubindo Engineering',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 4,
+                              color: Colors.blueGrey),
+                        ),
                       ),
                     ],
                   ),
                 ),
-
-                columnWidthMode: ColumnWidthMode.fill,
-                //frozenColumnsCount: 1,
-                gridLinesVisibility: GridLinesVisibility.both,
-                headerGridLinesVisibility: GridLinesVisibility.both,
               );
             } else if (snapshot.hasError) {
               return Text('${snapshot.error}');

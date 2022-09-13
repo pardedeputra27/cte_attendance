@@ -27,7 +27,7 @@ class Total {
 
 Future<Total> fetchTotal(nik, periode) async {
   String apiUrl =
-      'http://127.0.0.1/ci-restserver-flutter/Get_attendance?nik=$nik&periode=$periode';
+      'http://192.168.40.14/ci-restserver-flutter/Get_attendance?nik=$nik&periode=$periode';
   final apiResult = await http.get(Uri.parse(apiUrl));
   final jsonObject = jsonDecode(apiResult.body)['total'];
   //print(jsonObject);
