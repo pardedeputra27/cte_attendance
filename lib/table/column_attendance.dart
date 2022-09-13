@@ -4,6 +4,7 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 List<GridColumn> getColumnsAttendance() {
   return <GridColumn>[
     GridColumn(
+      columnWidthMode: ColumnWidthMode.auto,
       columnName: 'columnName1',
       label: Container(
         alignment: Alignment.center,
@@ -52,9 +53,9 @@ List<GridColumn> getColumnsAttendance() {
       label: Container(
         alignment: Alignment.center,
         child: const Text(
-          'meal',
+          'Meal',
           softWrap: true,
-          style: TextStyle(color: Colors.blueGrey),
+          style: TextStyle(color: Colors.green),
         ),
       ),
     ),
@@ -63,9 +64,9 @@ List<GridColumn> getColumnsAttendance() {
       label: Container(
         alignment: Alignment.center,
         child: const Text(
-          'transport',
+          'Trans',
           softWrap: true,
-          style: TextStyle(color: Colors.blueGrey),
+          style: TextStyle(color: Colors.green),
         ),
       ),
     ),
@@ -74,9 +75,9 @@ List<GridColumn> getColumnsAttendance() {
       label: Container(
         alignment: Alignment.center,
         child: const Text(
-          'hours',
+          'Hours',
           softWrap: true,
-          style: TextStyle(color: Colors.blueGrey),
+          style: TextStyle(color: Colors.green),
         ),
       ),
     ),
@@ -85,9 +86,9 @@ List<GridColumn> getColumnsAttendance() {
       label: Container(
         alignment: Alignment.center,
         child: const Text(
-          'break',
+          'Break',
           softWrap: true,
-          style: TextStyle(color: Colors.blueGrey),
+          style: TextStyle(color: Colors.green),
         ),
       ),
     ),

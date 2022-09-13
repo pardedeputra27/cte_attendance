@@ -33,7 +33,6 @@ class AttendanceDataGridSource extends DataGridSource {
   DataGridRowAdapter? buildRow(DataGridRow row) {
     return DataGridRowAdapter(cells: [
       Container(
-        height: 3,
         alignment: Alignment.center,
         child: Text(
           row.getCells()[0].value.toString(),
@@ -41,49 +40,41 @@ class AttendanceDataGridSource extends DataGridSource {
         ),
       ),
       Container(
-        height: 3,
         alignment: Alignment.center,
         child: Text(row.getCells()[1].value.toString(),
             overflow: TextOverflow.ellipsis),
       ),
       Container(
-        height: 3,
         alignment: Alignment.center,
         child: Text(row.getCells()[2].value.toString(),
             overflow: TextOverflow.ellipsis),
       ),
       Container(
-        height: 3,
         alignment: Alignment.center,
         child: Text(row.getCells()[3].value.toString(),
             overflow: TextOverflow.ellipsis),
       ),
       Container(
-        height: 3,
         alignment: Alignment.center,
         child: Text(row.getCells()[4].value.toString(),
             overflow: TextOverflow.ellipsis),
       ),
       Container(
-        height: 3,
         alignment: Alignment.center,
         child: Text(row.getCells()[5].value.toString(),
             overflow: TextOverflow.ellipsis),
       ),
       Container(
-        height: 3,
         alignment: Alignment.center,
         child: Text(row.getCells()[6].value.toString(),
             overflow: TextOverflow.ellipsis),
       ),
       Container(
-        height: 3,
         alignment: Alignment.center,
         child: Text(row.getCells()[7].value.toString(),
             overflow: TextOverflow.ellipsis),
       ),
       Container(
-        height: 3,
         alignment: Alignment.center,
         child: Text(row.getCells()[8].value.toString(),
             overflow: TextOverflow.ellipsis),

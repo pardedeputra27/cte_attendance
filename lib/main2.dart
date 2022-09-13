@@ -3,7 +3,7 @@ import 'controllers/total.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-//Table
+//datatable
 import 'table/column_attendance.dart';
 import 'table/row_attendance.dart';
 
@@ -56,10 +56,12 @@ class _DetailAttendanceState extends State<DetailAttendance> {
                 source: snapshot.data,
                 columns: getColumnsAttendance(),
                 columnWidthMode: ColumnWidthMode.none,
-                //frozenColumnsCount: 1,
+                rowHeight: 25,
+                frozenColumnsCount: 1,
+                footerFrozenRowsCount: 1,
+                // allowSorting: true,
                 gridLinesVisibility: GridLinesVisibility.both,
                 headerGridLinesVisibility: GridLinesVisibility.both,
-                footerFrozenRowsCount: 1,
                 footer: Container(
                   alignment: Alignment.centerLeft,
                   child: Column(
