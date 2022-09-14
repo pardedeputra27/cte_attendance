@@ -1,11 +1,17 @@
-import 'controllers/attendance.dart';
-import 'controllers/total.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+
+//controller
+import 'controllers/attendance.dart';
+import 'controllers/employee.dart';
+import 'controllers/total.dart';
 
 //datatable
 import 'table/column_attendance.dart';
 import 'table/row_attendance.dart';
+
+//widget
+import 'future_widget/future_employee.dart';
 
 class DetailAttendance extends StatefulWidget {
   final String nik;
@@ -19,11 +25,13 @@ class DetailAttendance extends StatefulWidget {
 
 class _DetailAttendanceState extends State<DetailAttendance> {
   late Future<Total> futureTotal;
+  late Future<Employee> futureEmployee;
 
   @override
   void initState() {
     super.initState();
     futureTotal = fetchTotal(widget.nik, widget.periode);
+    futureEmployee = fetchEmployee(widget.nik);
   }
 
   Future<AttendanceDataGridSource> getAttendanceDataSource() async {
@@ -50,10 +58,7 @@ class _DetailAttendanceState extends State<DetailAttendance> {
         ),
         body: ListView(
           children: [
-            const SizedBox(
-              height: 50,
-              child: Text('data'),
-            ),
+            DataEmployee(futureEmployee: futureEmployee),
             const Divider(
               color: Colors.black38,
               thickness: 3,
@@ -101,7 +106,7 @@ class _DetailAttendanceState extends State<DetailAttendance> {
                               ),
                             ),
                             Container(
-                              margin: const EdgeInsets.only(top: 10),
+                              margin: const EdgeInsets.only(top: 7),
                               alignment: Alignment.bottomRight,
                               child: const Text(
                                 'Citra Tubindo Engineering',
