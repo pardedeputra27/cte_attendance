@@ -44,6 +44,9 @@ class _DetailAttendanceState extends State<DetailAttendance> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.lime,
+      ),
       home: Scaffold(
         appBar: AppBar(
           title: Row(
@@ -54,7 +57,7 @@ class _DetailAttendanceState extends State<DetailAttendance> {
                     fontFamily: 'BlackParade',
                     letterSpacing: 3,
                     fontSize: 25,
-                    color: Color.fromARGB(255, 225, 247, 127)),
+                    color: Colors.blue),
               ),
             ],
           ),

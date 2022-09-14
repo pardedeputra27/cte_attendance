@@ -14,8 +14,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          // primarySwatch: Colors.cyan,
-          ),
+        primarySwatch: Colors.lime,
+      ),
       home: Scaffold(
         appBar: AppBar(
           title: Row(
@@ -26,11 +26,16 @@ class MyApp extends StatelessWidget {
                 'assets/icons/cte.ico',
                 width: 45,
                 height: 45,
+                color: Colors.blue,
               ),
               const Spacer(flex: 1),
               const Text(
                 'Citra Tubindo Engineering',
-                style: TextStyle(fontFamily: 'BlackParade', letterSpacing: 3),
+                style: TextStyle(
+                    fontFamily: 'BlackParade',
+                    letterSpacing: 3,
+                    fontSize: 25,
+                    color: Colors.white),
               ),
               const Spacer(flex: 2),
             ],
