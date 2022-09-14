@@ -22,10 +22,12 @@ class DataEmployee extends StatelessWidget {
                   children: <Widget>[
                     Container(
                         margin: const EdgeInsets.all(1),
-                        padding: const EdgeInsets.all(1),
+                        padding: const EdgeInsets.only(left: 20),
                         child: const Text(
                           'NIK',
-                          style: TextStyle(color: Colors.blue),
+                          style: TextStyle(
+                            color: Colors.blue,
+                          ),
                         )),
                     Container(
                       margin: const EdgeInsets.all(1),
@@ -38,7 +40,7 @@ class DataEmployee extends StatelessWidget {
                   children: <Widget>[
                     Container(
                       margin: const EdgeInsets.all(1),
-                      padding: const EdgeInsets.all(1),
+                      padding: const EdgeInsets.only(left: 20),
                       child: const Text(
                         'Name',
                         style: TextStyle(color: Colors.blue),
@@ -47,8 +49,7 @@ class DataEmployee extends StatelessWidget {
                     Container(
                       margin: const EdgeInsets.all(2),
                       padding: const EdgeInsets.all(2),
-                      child: Text(': ${snapshot.data!.name}',
-                          style: const TextStyle(color: Colors.purple)),
+                      child: Text(': ${snapshot.data!.name}'),
                     ),
                   ],
                 ),
@@ -56,7 +57,7 @@ class DataEmployee extends StatelessWidget {
                   children: <Widget>[
                     Container(
                       margin: const EdgeInsets.all(2),
-                      padding: const EdgeInsets.all(2),
+                      padding: const EdgeInsets.only(left: 20),
                       child: const Text(
                         'Job',
                         style: TextStyle(color: Colors.blue),
@@ -72,7 +73,7 @@ class DataEmployee extends StatelessWidget {
                   children: <Widget>[
                     Container(
                       margin: const EdgeInsets.all(2),
-                      padding: const EdgeInsets.all(2),
+                      padding: const EdgeInsets.only(left: 20),
                       child: const Text(
                         'Department',
                         style: TextStyle(color: Colors.blue),

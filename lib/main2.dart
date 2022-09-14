@@ -48,7 +48,14 @@ class _DetailAttendanceState extends State<DetailAttendance> {
         appBar: AppBar(
           title: Row(
             children: [
-              Text('Your Detail ${widget.nik}'),
+              Text(
+                'Your Detail ${widget.nik}',
+                style: const TextStyle(
+                    fontFamily: 'BlackParade',
+                    letterSpacing: 3,
+                    fontSize: 25,
+                    color: Color.fromARGB(255, 225, 247, 127)),
+              ),
             ],
           ),
           leading: BackButton(

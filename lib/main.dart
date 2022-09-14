@@ -28,7 +28,10 @@ class MyApp extends StatelessWidget {
                 height: 45,
               ),
               const Spacer(flex: 1),
-              const Text('Citra Tubindo Engineering'),
+              const Text(
+                'Citra Tubindo Engineering',
+                style: TextStyle(fontFamily: 'BlackParade', letterSpacing: 3),
+              ),
               const Spacer(flex: 2),
             ],
           ),
