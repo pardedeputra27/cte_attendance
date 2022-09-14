@@ -80,6 +80,7 @@ class _MyFormState extends State<MyForm> {
                 ),
               ),
               TextFormField(
+                maxLength: 10,
                 controller: nikController,
                 decoration: const InputDecoration(
                   icon: Icon(Icons.person),
