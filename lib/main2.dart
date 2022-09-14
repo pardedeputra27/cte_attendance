@@ -108,7 +108,7 @@ class _DetailAttendanceState extends State<DetailAttendance> {
                                   }
                                   //return const CircularProgressIndicator();
                                   return const Center(
-                                      child: Text('Please wait count total'));
+                                      child: Text('Please wait...'));
                                 },
                               ),
                             ),
@@ -130,9 +130,13 @@ class _DetailAttendanceState extends State<DetailAttendance> {
                   } else if (snapshot.hasError) {
                     return Text('${snapshot.error}');
                   } else {
-                    return const Center(
-                        child: Text('Please wait......',
-                            style: TextStyle(fontSize: 25)));
+                    return Center(
+                        child: Column(
+                      children: const <Widget>[
+                        CircularProgressIndicator(),
+                        Text('Please wait...', style: TextStyle(fontSize: 25)),
+                      ],
+                    ));
                   }
                 },
               ),
