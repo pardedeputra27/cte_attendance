@@ -11,7 +11,7 @@ import 'table/column_attendance.dart';
 import 'table/row_attendance.dart';
 
 //widget
-import 'future_widget/future_employee.dart';
+import 'widget/future_employee.dart';
 
 class DetailAttendance extends StatefulWidget {
   final String nik;
