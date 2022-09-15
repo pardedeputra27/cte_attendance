@@ -59,7 +59,7 @@ class DataEmployee extends StatelessWidget {
                       margin: const EdgeInsets.all(2),
                       padding: const EdgeInsets.only(left: 20),
                       child: const Text(
-                        'Job',
+                        'Job Position',
                         style: TextStyle(color: Colors.blue),
                       ),
                     ),
