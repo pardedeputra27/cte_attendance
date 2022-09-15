@@ -74,7 +74,7 @@ class _DetailAttendanceState extends State<DetailAttendance> {
               thickness: 3,
             ),
             SizedBox(
-              height: 580,
+              height: MediaQuery.of(context).size.height / 1.4,
               child: FutureBuilder(
                 future: getAttendanceDataSource(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {

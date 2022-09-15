@@ -14,14 +14,13 @@ class DataEmployee extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Card(
-            margin: const EdgeInsets.only(left: 50, right: 50, top: 5),
+            margin: const EdgeInsets.only(left: 5, right: 5, top: 7),
             elevation: 4,
             child: Table(
               children: <TableRow>[
                 TableRow(
                   children: <Widget>[
                     Container(
-                        margin: const EdgeInsets.all(1),
                         padding: const EdgeInsets.only(left: 20),
                         child: const Text(
                           'NIK',
@@ -30,59 +29,54 @@ class DataEmployee extends StatelessWidget {
                           ),
                         )),
                     Container(
-                      margin: const EdgeInsets.all(1),
                       padding: const EdgeInsets.all(1),
-                      child: Text(': ${snapshot.data!.nik}'),
+                      child: Text(
+                        ': ${snapshot.data!.nik}',
+                        style: const TextStyle(fontSize: 11),
+                      ),
                     ),
                   ],
                 ),
                 TableRow(
                   children: <Widget>[
                     Container(
-                      margin: const EdgeInsets.all(1),
                       padding: const EdgeInsets.only(left: 20),
                       child: const Text(
                         'Name',
                         style: TextStyle(color: Colors.blue),
                       ),
                     ),
-                    Container(
-                      margin: const EdgeInsets.all(2),
-                      padding: const EdgeInsets.all(2),
-                      child: Text(': ${snapshot.data!.name}'),
+                    Text(
+                      ': ${snapshot.data!.name}',
+                      style: const TextStyle(fontSize: 11),
                     ),
                   ],
                 ),
                 TableRow(
                   children: <Widget>[
                     Container(
-                      margin: const EdgeInsets.all(2),
                       padding: const EdgeInsets.only(left: 20),
                       child: const Text(
                         'Job Position',
                         style: TextStyle(color: Colors.blue),
                       ),
                     ),
-                    Container(
-                        margin: const EdgeInsets.all(2),
-                        padding: const EdgeInsets.all(2),
-                        child: Text(': ${snapshot.data!.jabatan}')),
+                    Text(': ${snapshot.data!.jabatan}',
+                        style: const TextStyle(fontSize: 11)),
                   ],
                 ),
                 TableRow(
                   children: <Widget>[
                     Container(
-                      margin: const EdgeInsets.all(2),
                       padding: const EdgeInsets.only(left: 20),
                       child: const Text(
                         'Department',
                         style: TextStyle(color: Colors.blue),
                       ),
                     ),
-                    Container(
-                      margin: const EdgeInsets.all(2),
-                      padding: const EdgeInsets.all(2),
-                      child: Text(': ${snapshot.data!.department}'),
+                    Text(
+                      ': ${snapshot.data!.department}',
+                      style: const TextStyle(fontSize: 11),
                     ),
                   ],
                 ),
