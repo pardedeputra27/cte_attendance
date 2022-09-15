@@ -74,7 +74,7 @@ class _DetailAttendanceState extends State<DetailAttendance> {
               thickness: 3,
             ),
             SizedBox(
-              height: 647,
+              height: 580,
               child: FutureBuilder(
                 future: getAttendanceDataSource(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
