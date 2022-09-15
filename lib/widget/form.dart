@@ -12,10 +12,11 @@ class MyForm extends StatefulWidget {
 
 class _MyFormState extends State<MyForm> {
   final _formKey = GlobalKey<FormState>();
+
   final List<Map<String, dynamic>> _selectPeriode = [
     {
       'value': 1,
-      'label': 'Januari',
+      'label': 'January',
     },
     {
       'value': 2,
@@ -23,7 +24,7 @@ class _MyFormState extends State<MyForm> {
     },
     {
       'value': 3,
-      'label': 'Maret',
+      'label': 'March',
     },
     {
       'value': 4,
@@ -31,11 +32,83 @@ class _MyFormState extends State<MyForm> {
     },
     {
       'value': 5,
-      'label': 'Mei',
+      'label': 'May',
     },
     {
       'value': 6,
-      'label': 'Juni',
+      'label': 'June',
+    },
+    {
+      'value': 7,
+      'label': 'July',
+    },
+    {
+      'value': 8,
+      'label': 'August',
+    },
+    {
+      'value': 9,
+      'label': 'September',
+    },
+    {
+      'value': 10,
+      'label': 'Oktober',
+    },
+    {
+      'value': 11,
+      'label': 'November',
+    },
+    {
+      'value': 12,
+      'label': 'December',
+    },
+    {
+      'value': -1,
+      'label': 'January (Last Year)',
+    },
+    {
+      'value': -2,
+      'label': 'February (Last Year)',
+    },
+    {
+      'value': -3,
+      'label': 'March (Last Year)',
+    },
+    {
+      'value': -4,
+      'label': 'April (Last Year)',
+    },
+    {
+      'value': -5,
+      'label': 'May (Last Year)',
+    },
+    {
+      'value': -6,
+      'label': 'June (Last Year)',
+    },
+    {
+      'value': -7,
+      'label': 'July (Last Year)',
+    },
+    {
+      'value': -8,
+      'label': 'August (Last Year)',
+    },
+    {
+      'value': -9,
+      'label': 'September (Last Year)',
+    },
+    {
+      'value': -10,
+      'label': 'Oktober (Last Year)',
+    },
+    {
+      'value': -11,
+      'label': 'November (Last Year)',
+    },
+    {
+      'value': -12,
+      'label': 'December(Last Year)',
     },
   ];
   TextEditingController nikController = TextEditingController();
@@ -82,8 +155,9 @@ class _MyFormState extends State<MyForm> {
               TextFormField(
                 maxLength: 10,
                 controller: nikController,
+                style: const TextStyle(fontFamily: 'oohBaby', letterSpacing: 2),
                 decoration: const InputDecoration(
-                  icon: Icon(Icons.person),
+                  icon: Icon(Icons.person, color: Colors.blue),
                   hintText: 'Enter Your NIK....',
                   labelText: 'NIK',
                 ),
@@ -97,9 +171,16 @@ class _MyFormState extends State<MyForm> {
               ),
               SelectFormField(
                 controller: periodeController,
-                type: SelectFormFieldType.dropdown, // or can be dialog
-                icon: const Icon(Icons.date_range),
-                labelText: 'Please select periode',
+                style: const TextStyle(fontFamily: 'oohBaby', letterSpacing: 2),
+                enableSearch: true,
+                dialogCancelBtn: 'Close',
+                dialogTitle: 'Select Period',
+                type: SelectFormFieldType.dialog, // or can be dialog
+                icon: const Icon(
+                  Icons.date_range,
+                  color: Colors.blue,
+                ),
+                labelText: '---Select Period---',
                 items: _selectPeriode,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -133,8 +214,14 @@ class _MyFormState extends State<MyForm> {
                   style: ButtonStyle(
                       backgroundColor:
                           MaterialStateProperty.all<Color>(Colors.lightGreen)),
-                  icon: const Icon(Icons.add_to_home_screen),
-                  label: const Text('SUBMIT'),
+                  icon: const Icon(
+                    Icons.add_to_home_screen,
+                    color: Colors.white,
+                  ),
+                  label: const Text(
+                    'SUBMIT',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               )
             ],

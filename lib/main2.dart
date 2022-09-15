@@ -11,7 +11,7 @@ import 'table/column_attendance.dart';
 import 'table/row_attendance.dart';
 
 //widget
-import 'future_widget/future_employee.dart';
+import 'widget/future_employee.dart';
 
 class DetailAttendance extends StatefulWidget {
   final String nik;
@@ -74,7 +74,7 @@ class _DetailAttendanceState extends State<DetailAttendance> {
               thickness: 3,
             ),
             SizedBox(
-              height: 647,
+              height: 580,
               child: FutureBuilder(
                 future: getAttendanceDataSource(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
